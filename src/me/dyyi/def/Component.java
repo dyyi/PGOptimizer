@@ -3,74 +3,6 @@ package me.dyyi.def;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-enum Place {
-	FIXED, // Specifies that the component has a location and cannot be moved by automatic tools, but can be moved using interactive commands. You must specify the components' location and orientation.
-	COVER, // Specifies that the component has a location and is a part of a cover macro. A COVER component cannot be moved by automatic tools or interactive commands. You must specify the component's location and its orientation.
-	PLACED, // Specifies that the component has a location, but can be moved using automatic layout tools. You must specify tha component's location and orientation.
-	UNPLACED; // Specifies that the component does not have a location
-	public Place setPlace(String in) {
-		switch (in) {
-		case "FIXED":
-			return Place.FIXED;
-		case "COVER":
-			return Place.COVER;
-		case "PLACED":
-			return Place.PLACED;
-		case "UNPLACED":
-			return Place.UNPLACED;
-		}
-		return Place.UNPLACED;
-		// Need to throw exception!!
-	}
-	@Override
-	public String toString() {
-		switch(this) {
-		case 
-		}
-		return super.toString();
-	}
-}
-
-enum Soruce {
-	NETLIST,
-	DIST,
-	USER,
-	TIMING
-}
-
-enum Orientation {
-	N, // North
-	S, // South
-	W, // West
-	E, // East
-	FN, // Flipped north
-	FS, // Flipped south
-	FW, // Flipped west
-	FE;	// Flpped east
-	@Override
-	public String toString() {
-		switch (this) {
-			case N:
-				return "N";
-			case S:
-				return "S";
-			case W:
-				return "W";
-			case E:
-				return "E";
-			case FN:
-				return "FN";
-			case FS:
-				return "FS";
-			case FW:
-				return "FW";
-			case FE:
-				return "FE";
-		}
-		return super.toString();
-	}
-}
-
 public class Component {
 	private String name;   // instance name
 	private String modelName; // model(cell) name
@@ -114,14 +46,16 @@ public class Component {
 			this.name = matcher.group("name");
 			this.modelName = matcher.group("modelName");
 		}
-		
+		// Component Position Check
 		matcher = Pattern.compile("\\+\\s+(?<type>FIXED|COVER|PLACED)?\\s*\\(\\s*(?<x>[0-9\\.e\\+\\-]+)\\s+(?<y>[0-9\\.e\\+\\-]+)\\s+\\)\\s+(?<orientation>\\S+)").matcher(str);
 		if (matcher.find()) {
-			this.place = matcher.group("type");
+			this.place= Place.setPlace(matcher.group("type"));
 			this.x = Double.parseDouble(matcher.group("x"));
 			this.y = Double.parseDouble(matcher.group("y"));
+			this.orientation = Orientation.setOrientation(matcher.group("orientation"));
 		}
 	}
+	
 	
 	@Override
 	public boolean equals(Object obj) {
