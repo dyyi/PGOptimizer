@@ -10,6 +10,7 @@ public class Component {
 	private Double x; // x coordinate
 	private Double y; // y coordinate
 	private Orientation orientation; // Orientation
+	private boolean top; // Indicator whether this component is top component, that is to say the top design itself.
 	
 	/* Constructor */
 	public Component() {
@@ -19,6 +20,7 @@ public class Component {
 		this.x = null;
 		this.y = null;
 		this.orientation = null;
+		this.top = false;
 	}
 	public Component(String str) {
 		this();
@@ -38,7 +40,9 @@ public class Component {
 	public void setY(Double y) { this.y = y; }
 	public Orientation getOrientation() { return orientation; }
 	public void setOrientation(Orientation orientation) { this.orientation = orientation; }
-
+	public boolean isTop() { return top; }
+	public void setTop(boolean top) { this.top = top; }
+	
 	public void parse(String str) {
 		Matcher matcher;
 		matcher = Pattern.compile("^\\s*-\\s+(?<name>\\S+)\\s+(?<modelName>\\S+)").matcher(str);
@@ -66,7 +70,7 @@ public class Component {
 	
 	@Override
 	public String toString() {
-		return this.name + " " + this.modelName + " " + x + " " + y + " " + this.orientation;
+		return this.name + " " + this.modelName + " " + this.place + " " + this.x + " " + this.y + " " + this.orientation;
 	}
 	
 	public static void main(String[] args) {
